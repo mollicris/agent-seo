@@ -1,0 +1,49 @@
+{
+  "name": "@mollicris/agent-seo",
+  "version": "0.1.0",
+  "description": "SEO Agent para React + Vite: audita y optimiza Meta Tags & Open Graph",
+  "type": "module",
+  "main": "./dist/index.js",
+  "files": [
+    "src",
+    "skills",
+    "dist",
+    "package.json",
+    "README.md",
+    "ARCHITECTURE.md",
+    "setup.sh"
+  ],
+  "scripts": {
+    "build": "tsc && bun build src/index.ts --outdir dist",
+    "dev": "bun run src/index.ts",
+    "test": "bun test tests/",
+    "test:watch": "bun test tests/ --watch",
+    "validate": "bun run src/validators/index.ts",
+    "setup": "bash setup.sh",
+    "setup:team": "bash setup.sh --team"
+  },
+  "keywords": [
+    "seo",
+    "react",
+    "vite",
+    "meta-tags",
+    "open-graph",
+    "twitter-card",
+    "ai-agent"
+  ],
+  "author": "mollicris",
+  "license": "MIT",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
+    "axios": "^1.6.0",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0",
+    "@types/bun": "latest",
+    "@types/node": "^20.0.0"
+  },
+  "engines": {
+    "bun": ">=1.0.0"
+  }
+}
