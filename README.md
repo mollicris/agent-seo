@@ -1,209 +1,215 @@
-# Agent SEO para React + Vite
+# 🔍 Agent SEO - Optimizador de Meta Tags y Open Graph
 
-> **AI-powered SEO optimization agent** para aplicaciones React con Vite. Especializado en Meta Tags y Open Graph.
+Agente IA especializado en auditar y optimizar Meta Tags y Open Graph para aplicaciones React + Vite. Siguiendo la arquitectura de [gstack](https://github.com/garrytan/gstack).
 
-## 📋 Descripción
+## ✨ Características (v0.1.0)
 
-Agent SEO es un agente autónomo basado en la arquitectura de [gstack](https://github.com/garrytan/gstack) que audita, optimiza y revisa la implementación SEO de aplicaciones React + Vite, enfocándose inicialmente en:
+### 📊 Auditorías
+- **Meta Tags Validator** - 10 reglas (title, description, viewport, charset, canonical, robots, keywords, lang, etc.)
+- **Open Graph Validator** - 10 reglas (og:title, og:description, og:image, og:url, og:type, og:site_name, og:locale, etc.)
+- **Twitter Card Validator** - 8 reglas (twitter:card, twitter:title, twitter:description, twitter:image, twitter:site, etc.)
+- **Total: 28 reglas automáticas**
 
-- **Meta Tags** (`title`, `description`, `keywords`, `robots`, `canonical`)
-- **Open Graph** (redes sociales: Facebook, LinkedIn, etc.)
-- **Twitter Card** (optimización para X/Twitter)
+### 🤖 Skills para Claude Code
+- `/seo-audit` - Auditar URL completa
+- `/seo-optimize` - Generar fixes automáticos (próxima versión)
+- `/seo-review` - Validar cambios antes de merge (próxima versión)
 
-Desarrollado con TypeScript, Bun y Claude Code.
+### 📈 Reports
+- Markdown reports con score 0-100
+- Clasificación por severidad (Critical, Warning, Info)
+- Sugerencias de fixes automáticas
+- Extracción de tags existentes
 
-## 🎯 Características iniciales
+## 🚀 Quick Start (30 segundos)
 
-- ✅ `/seo-audit` — Analiza tu aplicación y detecta problemas SEO
-- ✅ `/seo-optimize` — Genera automáticamente meta tags y Open Graph optimizados
-- ✅ `/seo-review` — Valida cambios antes de hacer merge
-- 🔜 `/lighthouse-report` — Core Web Vitals (próxima fase)
-- 🔜 `/sitemap-generate` — Sitemap automático (próxima fase)
-- 🔜 `/schema-builder` — JSON-LD estructurado (próxima fase)
-
-## 🚀 Inicio rápido
-
-### Requisitos
-
-- Node.js 18+
-- Bun 1.0+
-- Claude Code
-- Git
-
-### Instalación (30 segundos)
+### Instalación
 
 ```bash
-# 1. Clonar el repo
-git clone https://github.com/mollicris/agent-seo.git ~/.claude/skills/agent-seo
-
-# 2. Setup
-cd ~/.claude/skills/agent-seo && ./setup
-
-# 3. En Claude Code, usa los skills:
-/seo-audit https://myapp.com
-/seo-optimize src/pages
-/seo-review
+# Opción 1: Clone en Claude Code
+cd ~/.claude/skills
+git clone https://github.com/mollicris/agent-seo.git
+cd agent-seo
+bash setup.sh
 ```
 
-### Uso en tu aplicación React + Vite
+### Uso
 
-```bash
-cd tu-app-react-vite
+```
+You: /seo-audit https://myapp.com
 
-# Audita problemas SEO
-/seo-audit .
+Agent:
+🔍 Escaneando: https://myapp.com
+✅ 15 checks passed
+⚠️  8 warnings
+❌ 3 errores críticos
 
-# Genera meta tags + Open Graph
-/seo-optimize src/pages
+Score: 67/100
 
-# Revisa antes de merge
-/seo-review
+Crítico:
+  - og:image:missing (sin imagen para redes sociales)
+  - meta description:length (45 chars, mínimo 120)
+  - canonical:missing
+```
+
+## 📋 Reglas de Validación
+
+### Meta Tags (10)
+| Regla | Severidad | Descripción |
+|-------|-----------|-------------|
+| title:missing | 🔴 Critical | Tag `<title>` es obligatorio |
+| title:length | 🟡 Warning | Debe tener 30-60 caracteres |
+| description:missing | 🔴 Critical | Meta description obligatoria |
+| description:length | 🟡 Warning | Debe tener 120-160 caracteres |
+| viewport:missing | 🔴 Critical | Necesario para responsive |
+| charset:missing | 🔴 Critical | UTF-8 recomendado |
+| canonical:missing | 🟡 Warning | Evita contenido duplicado |
+| robots:missing | ℹ️ Info | Controla indexación |
+| keywords:missing | ℹ️ Info | Menor importancia en 2024 |
+| lang:missing | 🟡 Warning | Importante para accesibilidad |
+
+### Open Graph (10)
+| Regla | Severidad | Descripción |
+|-------|-----------|-------------|
+| og:title:missing | 🔴 Critical | Título para redes sociales |
+| og:description:missing | 🔴 Critical | Preview en redes |
+| og:image:missing | 🔴 Critical | Imagen obligatoria |
+| og:image:size | 🟡 Warning | Debe ser 1200x630px |
+| og:url:missing | 🟡 Warning | URL canónica |
+| og:type:missing | 🟡 Warning | Defaultea a "website" |
+| og:site_name:missing | ℹ️ Info | Para branding |
+| og:locale:missing | ℹ️ Info | Defaultea a "en_US" |
+| og:image:alt:missing | ℹ️ Info | Accesibilidad |
+| og:consistency | 🟡 Warning | Consistencia con page title |
+
+### Twitter Card (8)
+| Regla | Severidad | Descripción |
+|-------|-----------|-------------|
+| twitter:card:missing | 🔴 Critical | Tipo de card (summary, summary_large_image) |
+| twitter:title:missing | 🔴 Critical | Título para Twitter |
+| twitter:description:missing | 🔴 Critical | Descripción para Twitter |
+| twitter:image:missing | 🔴 Critical | Imagen para tweets |
+| twitter:site:missing | 🟡 Warning | @handle del sitio |
+| twitter:creator:missing | ℹ️ Info | @handle del creador |
+| twitter:card:value | 🟡 Warning | Valor válido |
+| twitter:image:alt:missing | ℹ️ Info | Alt text (accesibilidad) |
+
+## 🛠️ Uso Programático
+
+```typescript
+import { SEOValidator } from '@mollicris/agent-seo'
+
+const seo = new SEOValidator()
+
+// Auditoría completa
+const report = seo.auditAll(html, {
+  url: 'https://myapp.com',
+  title: 'My App',
+  description: 'The best app ever',
+  image: 'https://myapp.com/og-image.jpg'
+})
+
+console.log(`Score: ${report.summary.score}/100`)
+console.log(`Issues: ${report.issues.length}`)
+
+// Generar Markdown report
+const markdown = seo.formatReport(report)
+console.log(markdown)
+
+// Aplicar fixes automáticos
+const fixed = seo.applyFixes(html, [
+  'og:image:missing',
+  'title:length',
+  'description:missing'
+])
 ```
 
 ## 📚 Documentación
 
-- [ARCHITECTURE.md](./ARCHITECTURE.md) — Diseño y decisiones técnicas
-- [SKILLS.md](./docs/skills.md) — Documentación completa de cada skill
-- [Meta Tags Guide](./docs/meta-tags-guide.md) — Guía de meta tags para React + Vite
-- [Open Graph Guide](./docs/og-guide.md) — Implementación de Open Graph
+- [ARCHITECTURE.md](./ARCHITECTURE.md) - Decisiones técnicas y diseño
+- [Roadmap](#roadmap) - Fases futuras
 
-## 🏗️ Estructura del proyecto
+## 🗓️ Roadmap
+
+### v0.1.0 (Actual)
+- ✅ Meta Tags Validator (10 reglas)
+- ✅ Open Graph Validator (10 reglas)
+- ✅ Twitter Card Validator (8 reglas)
+- ✅ SEOValidator agregador
+
+### v0.2.0
+- `/seo-optimize` - Generar código automáticamente
+- `/seo-review` - Validar PRs
+- Generadores de código TypeScript
+- Tests unitarios
+
+### v0.3.0
+- Core Web Vitals audit
+- Structured Data (schema.org)
+- Sitemap/Robots.txt generators
+- Lighthouse integration
+
+### v0.4.0+
+- Multi-language support
+- Analytics dashboard
+- Auto-monitoring
+- Vite plugin
+
+## 🏗️ Arquitectura
 
 ```
-agent-seo/
-├── skills/
-│   ├── seo-audit/
-│   │   ├── SKILL.md
-│   │   └── src/
-│   │       ├── audit.ts
-│   │       ├── validators/
-│   │       │   ├── meta-tags.ts
-│   │       │   ├── open-graph.ts
-│   │       │   └── twitter-card.ts
-│   │       └── report.ts
-│   │
-│   ├── seo-optimize/
-│   │   ├── SKILL.md
-│   │   └── src/
-│   │       ├── optimize.ts
-│   │       └── generators/
-│   │           ├── meta-tag-generator.ts
-│   │           └── og-generator.ts
-│   │
-│   └── seo-review/
-│       ├── SKILL.md
-│       └── src/review.ts
-│
-├── src/
-│   ├── types.ts
-│   ├── validators/
-│   ├── generators/
-│   ├── utils/
-│   └── cli.ts
-│
-├── tests/
-├── docs/
-├── setup.sh
-├── package.json
-└── README.md
+SEOValidator (agregador)
+├── MetaTagValidator (10 reglas)
+├── OpenGraphValidator (10 reglas)
+└── TwitterCardValidator (8 reglas)
+
+Cada validador:
+- validate(html) → boolean
+- getIssues(html) → Issue[]
+- extractTags(html) → Record<string, string>
+- suggestTags(html, data) → Record<string, string>
 ```
 
-## 🔧 Tech Stack
+Ver [ARCHITECTURE.md](./ARCHITECTURE.md) para más detalles.
+
+## 🔐 Seguridad
+
+- ✅ Input validation con Cheerio
+- ✅ Output escaping (HTML safe)
+- ✅ No externa dependencies en runtime
+- ✅ Zod para validación de tipos
+
+## 📦 Tech Stack
 
 - **Language**: TypeScript
-- **Runtime**: Bun 1.0+
-- **HTML Parser**: Cheerio
-- **HTTP Client**: Axios
-- **Validation**: Zod
-- **AI**: Claude Code + Agent SDK
+- **Runtime**: Bun (⚡ Super rápido)
+- **Parsing**: Cheerio (lightweight DOM parser)
+- **Validation**: Zod (runtime type checking)
+- **Integration**: Claude Code / OpenClaw
 
-## 📖 Roadmap
+## 📊 Performance
 
-### Fase 1: Meta Tags + Open Graph ✅
-- [x] `/seo-audit` básico
-- [x] Meta tags validator
-- [x] Open Graph validator
-- [x] `/seo-optimize` generador
-- [ ] `/seo-review` integrado
+```
+MetaTagValidator.validate()     ~2ms
+OpenGraphValidator.validate()   ~2ms
+TwitterCardValidator.validate() ~1ms
+SEOValidator.auditAll()         ~8ms
 
-### Fase 2: Core Web Vitals 🔜
-- [ ] `/lighthouse-report`
-- [ ] LCP/CLS/FID analysis
-- [ ] Performance recommendations
-
-### Fase 3: Sitemap & Robots 🔜
-- [ ] `/sitemap-generate` dinámico
-- [ ] `robots.txt` automático
-- [ ] Crawlability audit
-
-### Fase 4: Structured Data 🔜
-- [ ] `/schema-builder` JSON-LD
-- [ ] Breadcrumbs schema
-- [ ] Product/Article schema
-
-## 💡 Ejemplos de uso
-
-### Auditar una aplicación
-
-```bash
-You: /seo-audit https://myapp.com
-
-Agent: 
-[SCAN] Analizando 24 páginas...
-[RESULTS] 18 issues encontrados:
-
-❌ CRITICAL (3):
-- Missing meta description en 5 páginas
-- Open Graph image no optimizada
-
-⚠️ WARNING (8):
-- Twitter Card incomplete
-- Canonical tags inconsistentes
-
-ℹ️ INFO (7):
-- Mejoras de best practices
+Total (parse + audit 28 rules)  ~15ms
 ```
 
-### Generar meta tags optimizados
+## 📝 License
 
-```bash
-You: /seo-optimize src/pages --og --twitter
+MIT - Libre para usar en tus proyectos
 
-Agent:
-[GENERATE] Creando meta tags...
-- src/pages/home.tsx → meta tags generados
-- src/pages/products/[id].tsx → Open Graph dinámico
-- src/pages/blog/[slug].tsx → Twitter Card schema
+## 🤝 Contributing
 
-[FILES] 3 archivos actualizados
-[VALIDATION] ✅ 100% compliance
-```
+Las PRs son bienvenidas. Para cambios mayores, abre un issue primero.
 
-## 🤝 Contribuir
+## 📮 Support
 
-Las contribuciones son bienvenidas. Para cambios mayores, abre primero un issue.
-
-```bash
-git checkout -b feature/tu-feature
-bun test
-git push origin feature/tu-feature
-```
-
-## 📄 Licencia
-
-MIT - Ver [LICENSE](./LICENSE)
-
-## 🔗 Enlaces
-
-- [gstack](https://github.com/garrytan/gstack) - Arquitectura base
-- [React Helmet](https://github.com/nfl/react-helmet) - Gestión de head en React
-- [Open Graph Protocol](https://ogp.me/)
-- [Twitter Card](https://developer.twitter.com/en/docs/twitter-for-websites/cards)
-
-## 📧 Soporte
-
-¿Preguntas? Abre un [GitHub Issue](https://github.com/mollicris/agent-seo/issues)
+¿Preguntas? Abre un [issue en GitHub](https://github.com/mollicris/agent-seo/issues)
 
 ---
 
-**Made with ❤️ by [@mollicris](https://github.com/mollicris)**
+**Made with ❤️ siguiendo los principios de [gstack](https://github.com/garrytan/gstack)**

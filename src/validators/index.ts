@@ -1,4 +1,4 @@
-// validators/index.ts - Agregador SEO (orquesta todos los validadores)
+// src/validators/index.ts - Agregador SEO (orquesta todos los validadores)
 
 import { MetaTagValidator, metaTagRules } from "./meta-tags"
 import { OpenGraphValidator, openGraphRules } from "./open-graph"
@@ -231,10 +231,12 @@ export class SEOValidator {
 
     if (report.suggestions) {
       lines.push(`## Suggestions`)
-      lines.push(`### Meta Tags`)
-      Object.entries(report.suggestions.metaTags || {}).forEach(([key, value]) => {
-        lines.push(`- \`${key}\`: ${value}`)
-      })
+      if (report.suggestions.metaTags) {
+        lines.push(`### Meta Tags`)
+        Object.entries(report.suggestions.metaTags).forEach(([key, value]) => {
+          lines.push(`- \`${key}\`: ${value}`)
+        })
+      }
       lines.push(``)
     }
 
